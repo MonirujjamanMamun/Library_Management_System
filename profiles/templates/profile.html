@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class='container mx-auto mt-3'>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Book Name</th>
+        <th scope="col">price</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      {% if book.borrow %}
+      <tr>
+        <th scope="row">{{book.id}}</th>
+        <td>{{book.title}}</td>
+        <td>{{book.borrowing_price}}</td>
+        <td class='d-flex'>
+          <a class='btn btn-primary me-1' href="{% url "review" book.id %}">Review</a> 
+          <a class='btn btn-danger' href="{% url "return" book.id %}">Return</a>
+        </td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

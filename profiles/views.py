@@ -3,7 +3,5 @@ from books.models import BooksModel
 
 
 def profile(request):
-
     books = BooksModel.objects.all()
-
-    return render(request, 'profile.html', {'books': books})
+    return render(request, 'profile_data.html', {'books': books})

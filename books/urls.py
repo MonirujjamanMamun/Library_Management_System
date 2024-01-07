@@ -5,6 +5,6 @@ urlpatterns = [
     path('borrow/<int:id>/', views.borrow_book, name='borrow'),
     path('return/<int:id>/', views.return_book, name='return'),
     path('review/<int:book_id>/', views.book_review_create, name='review'),
-    # path('review/<int:book_id>/',views.BookReviewCreateView.as_view(), name='review'),
+    path('details/<int:id>/', views.DetailViews.as_view(), name='details'),
 
 ]

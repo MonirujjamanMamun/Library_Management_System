@@ -2,7 +2,7 @@ from .forms import BookReviewForm
 from django.views import View
 from django.shortcuts import get_object_or_404, redirect, render
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from .models import BooksModel, BookReview
 from .forms import BooksForm
 from django.urls import reverse_lazy
@@ -32,6 +32,13 @@ class AddBooksView(CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required, name='dispatch')
+class DetailViews(DetailView):
+    model = BooksModel
+    pk_url_kwarg = 'id'
+    template_name = 'details.html'
+
+
 @login_required
 def borrow_book(request, id):
     book_data = get_object_or_404(BooksModel, pk=id)
@@ -55,7 +62,7 @@ def borrow_book(request, id):
             # send_transaction_email(
             #     User, account_data.balance, 'Borrow Books', 'borrow_email.html')
 
-            return redirect('profiles')
+            return redirect('user_profiles')
         else:
             messages.error(request, 'Insufficient balance.')
     else:
@@ -93,7 +100,7 @@ def return_book(request, id):
     else:
         messages.error(request, 'Transaction not found.')
 
-    return redirect('profiles')
+    return redirect('user_profiles')
 
 
 @login_required
@@ -106,11 +113,10 @@ def book_review_create(request, book_id):
 
         if form.is_valid():
             review = form.save(commit=False)
-            review.user = request.user.username  # Assuming UserProfile is related to User
+            review.user = request.user.username
             review.book = book
             review.save()
 
-            # Redirect to book detail page
             return redirect('home', book_id=book_id)
     else:
         form = BookReviewForm()

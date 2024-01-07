@@ -24,7 +24,7 @@
                     <p class="card-text">Price: {{book.borrowing_price}}</p>
                     <p class="card-text">Rating: {{rating.rating}}</p>
                    
-                <a href='{% url "borrow" book.id %}' class='btn btn-primary' type='submit'>Borrow</a>
+                    <a href="{% url 'details' book.id %}" class='btn btn-primary' type='submit'>Details</a>
                 
                 </div>
             </div>

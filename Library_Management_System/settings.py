@@ -28,6 +28,8 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://library-management-system-zbiq.onrender.com', 'https://*.127.0.0.1']
 
 
 # Application definition
@@ -66,7 +68,7 @@ ROOT_URLCONF = 'Library_Management_System.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -58,9 +58,8 @@ def borrow_book(request, id):
 
             account_data.balance = balance
             account_data.save()
-
             # send_transaction_email(
-            #     User, account_data.balance, 'Borrow Books', 'borrow_email.html')
+            #     account_data.user, account_data.balance, 'Borrow Books', 'borrow_email.html')
 
             return redirect('user_profiles')
         else:
@@ -92,7 +91,7 @@ def return_book(request, id):
             account_data.save()
 
             # send_transaction_email(
-            #     User, account_data.balance, 'Borrow Books', 'borrow_email.html')
+            #     account_data.user, account_data.balance, 'Borrow Books', 'borrow_email.html')
 
             return redirect('home')
         else:
@@ -113,7 +112,7 @@ def book_review_create(request, book_id):
 
         if form.is_valid():
             review = form.save(commit=False)
-            review.user = request.user.username
+            review.user = request.user
             review.book = book
             review.save()
 
@@ -122,27 +121,3 @@ def book_review_create(request, book_id):
         form = BookReviewForm()
 
     return render(request, template_name, {'book': book, 'form': form})
-
-
-# class BookReviewCreateView(View):
-#     template_name = 'review.html'
-
-#     def get(self, request, book_id):
-#         book = get_object_or_404(BooksModel, pk=book_id)
-#         form = BookReviewForm()
-#         return render(request, self.template_name, {'book': book, 'form': form})
-
-#     def post(self, request, book_id):
-#         book = get_object_or_404(BooksModel, pk=book_id)
-#         form = BookReviewForm(request.POST)
-
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             # Assuming UserProfile is related to User
-#             review.user = request.user.profile
-#             review.book = book
-#             review.save()
-#             # Redirect to book detail page
-#             return redirect('home', book_id=book_id)
-
-#         return render(request, self.template_name, {'book': book, 'form': form})

@@ -15,7 +15,7 @@ def send_transaction_email(user, amount, subject, template):
         'user': user,
         'amount': amount,
     })
-    send_email = EmailMultiAlternatives(subject, '', to=[user.email])
+    send_email = EmailMultiAlternatives(subject, message, to=[user.email])
     send_email.attach_alternative(message, "text/html")
     send_email.send()
 
@@ -51,6 +51,6 @@ class DepositMoneyView(TransactionCreateMixin):
             self.request,
             f'{"{:,.2f}".format(float(amount))}$ was deposited to your account successfully'
         )
-        send_transaction_email(
-            self.request.user, amount, "Deposite Message", "deposite_email.html")
+        # send_transaction_email(
+        #     self.request.user, amount, "Deposite Message", "deposite_email.html")
         return super().form_valid(form)

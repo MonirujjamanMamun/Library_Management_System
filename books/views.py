@@ -42,9 +42,12 @@ class DetailViews(DetailView):
 @login_required
 def borrow_book(request, id):
     book_data = get_object_or_404(BooksModel, pk=id)
-    account_data = get_object_or_404(UserBankAccount, user=request.user)
+    account_data = get_object_or_404(
+        UserBankAccount, user=request.user)
+    print('accounts-data', account_data)
 
-    accounts = Transaction.objects.filter(account=account_data).first()
+    accounts = Transaction.objects.filter(account=account_data)
+    print('accounts', accounts)
 
     if accounts is not None:
         balance = account_data.balance
@@ -58,8 +61,8 @@ def borrow_book(request, id):
 
             account_data.balance = balance
             account_data.save()
-            # send_transaction_email(
-            #     account_data.user, account_data.balance, 'Borrow Books', 'borrow_email.html')
+            send_transaction_email(
+                account_data.user, account_data.balance, 'Borrow Books', 'borrow_email.html')
 
             return redirect('user_profiles')
         else:
@@ -75,7 +78,7 @@ def return_book(request, id):
     book_data = get_object_or_404(BooksModel, pk=id)
     account_data = get_object_or_404(UserBankAccount, user=request.user)
 
-    accounts = Transaction.objects.filter(account=account_data).first()
+    accounts = Transaction.objects.filter(account=account_data)
 
     if accounts is not None:
         balance = account_data.balance
@@ -90,8 +93,8 @@ def return_book(request, id):
             account_data.balance = balance
             account_data.save()
 
-            # send_transaction_email(
-            #     account_data.user, account_data.balance, 'Borrow Books', 'borrow_email.html')
+            send_transaction_email(
+                account_data.user, account_data.balance, 'Returns Books', 'borrowreturn_email.html')
 
             return redirect('home')
         else:
